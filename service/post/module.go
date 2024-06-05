@@ -9,17 +9,16 @@ type Module struct {
 	db *gorm.DB
 }
 
-func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
-	// db.AutoMigrate(&models.Tag{})
-
-	m := NewDelivery(db)
-
-	r := router.Group("/post")
-	{
-		r.GET("/", m.Index)
-
-	}
+func NewModule(db *gorm.DB) *Module {
 	return &Module{
 		db: db,
+	}
+}
+
+func (m *Module) SetupRoutes(router *gin.RouterGroup) {
+	d := NewDelivery(m.db)
+	r := router.Group("/post")
+	{
+		r.GET("/", d.Index)
 	}
 }

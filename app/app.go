@@ -38,7 +38,7 @@ func NewApp() App {
 	}
 }
 
-func (a *App) Run() {
+func (a *App) Setup() {
 	a.AuthModule = auth.NewModule(a.db)
 	a.FollowModule = follow.NewModule(a.db)
 
@@ -49,6 +49,9 @@ func (a *App) Run() {
 	}
 
 	a.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	a.router.Run()
 
+}
+
+func (a *App) Run() {
+	a.router.Run()
 }

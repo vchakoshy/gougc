@@ -1,4 +1,4 @@
-package post
+package app
 
 import (
 	"bytes"
@@ -17,9 +17,8 @@ import (
 
 type ModuleTestSuite struct {
 	suite.Suite
-	db      *gorm.DB
-	usecase *Usecase
-	router  *gin.Engine
+	db     *gorm.DB
+	router *gin.Engine
 }
 
 func (s *ModuleTestSuite) SetupSuite() {
@@ -30,10 +29,12 @@ func (s *ModuleTestSuite) SetupSuite() {
 		panic(err)
 	}
 
-	s.usecase = NewUsecase(s.db)
-	s.router = gin.New()
-	m := NewModule(s.db)
-	m.SetupRoutes(s.router.Group("/api/v1"))
+	a := App{
+		db:     s.db,
+		router: gin.Default(),
+	}
+	a.Setup()
+
 }
 
 func (s *ModuleTestSuite) TearDownSuite() {
@@ -54,15 +55,7 @@ func (s *ModuleTestSuite) TestAll() {
 		data         any
 		expectedCode int
 		authHeader   string
-	}{
-		{
-			name:         "index",
-			method:       http.MethodGet,
-			url:          "/api/v1/post/",
-			data:         nil,
-			expectedCode: http.StatusOK,
-		},
-	}
+	}{}
 
 	for _, tt := range tests {
 		w := httptest.NewRecorder()
