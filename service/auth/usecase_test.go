@@ -1,4 +1,4 @@
-package user
+package auth
 
 import (
 	"os"
@@ -36,4 +36,21 @@ func (s *UsecaseTestSuite) TearDownSuite() {
 
 func TestNoteTestSuite(t *testing.T) {
 	suite.Run(t, &UsecaseTestSuite{})
+}
+
+func (s *UsecaseTestSuite) TestRegister() {
+	// register user
+	o, err := s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
+	s.Nil(err)
+	s.Greater(o.ID, uint(0))
+	s.NotEqual("123456", o.Password)
+
+	pok := s.usecase.CheckPasswordHash(o.Password, "123456")
+	s.True(pok)
+
+	// register user with duplicate username
+	o, err = s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
+	s.NotNil(err)
+	s.Zero(o.ID)
+
 }
