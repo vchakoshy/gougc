@@ -41,7 +41,6 @@ func (u Usecase) Login(r LoginForm) (models.User, error) {
 	err = u.db.Model(&o).Update("last_login", time.Now()).Error
 
 	return o, err
-
 }
 
 func (u Usecase) Register(r RegisterForm) (models.User, error) {
@@ -66,6 +65,7 @@ func (u *Usecase) HashPassword(p string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return string(hashedPassword), err
 }
 
