@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"time"
 
 	"github.com/vchakoshy/gougc/models"
 	"golang.org/x/crypto/bcrypt"
@@ -27,11 +28,14 @@ func (u Usecase) Login(r LoginForm) (models.User, error) {
 		return o, err
 	}
 
-	if u.CheckPasswordHash(o.Password, r.Password) {
-		return o, nil
+	if !u.CheckPasswordHash(o.Password, r.Password) {
+		return models.User{}, ErrUserNotFound
 	}
 
-	return models.User{}, ErrUserNotFound
+	err = u.db.Model(&o).Update("last_login", time.Now()).Error
+
+	return o, err
+
 }
 
 func (u Usecase) Register(r RegisterForm) (models.User, error) {
