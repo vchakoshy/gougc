@@ -10,17 +10,19 @@ type Module struct {
 	db *gorm.DB
 }
 
-func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
+func NewModule(db *gorm.DB) *Module {
 	db.AutoMigrate(&models.User{})
 
-	m := NewDelivery(db)
-
-	r := router.Group("/auth")
-	{
-		r.POST("/register", m.Register)
-		r.POST("/login", m.Login)
-	}
 	return &Module{
 		db: db,
+	}
+}
+
+func (m *Module) SetupRoutes(router *gin.RouterGroup) {
+	d := NewDelivery(m.db)
+	r := router.Group("/auth")
+	{
+		r.POST("/register/", d.Register)
+		r.POST("/login/", d.Login)
 	}
 }

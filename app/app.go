@@ -9,7 +9,7 @@ import (
 	_ "github.com/vchakoshy/gougc/docs"
 
 	"github.com/vchakoshy/gougc/service/auth"
-	"github.com/vchakoshy/gougc/service/user"
+	"github.com/vchakoshy/gougc/service/follow"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -18,6 +18,9 @@ import (
 type App struct {
 	db     *gorm.DB
 	router *gin.Engine
+
+	AuthModule   *auth.Module
+	FollowModule *follow.Module
 }
 
 func NewApp() App {
@@ -35,11 +38,14 @@ func NewApp() App {
 	}
 }
 
-func (a App) Run() {
+func (a *App) Run() {
+	a.AuthModule = auth.NewModule(a.db)
+	a.FollowModule = follow.NewModule(a.db)
+
 	v1 := a.router.Group("/api/v1")
 	{
-		user.NewModule(a.db, v1)
-		auth.NewModule(a.db, v1)
+		a.AuthModule.SetupRoutes(v1)
+		a.FollowModule.SetupRoutes(v1)
 	}
 
 	a.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

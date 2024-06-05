@@ -32,7 +32,8 @@ func (s *ModuleTestSuite) SetupSuite() {
 
 	s.usecase = NewUsecase(s.db)
 	s.router = gin.New()
-	NewModule(s.db, s.router.Group("/api/v1"))
+	m := NewModule(s.db)
+	m.SetupRoutes(s.router.Group("/api/v1"))
 }
 
 func (s *ModuleTestSuite) TearDownSuite() {
@@ -57,42 +58,42 @@ func (s *ModuleTestSuite) TestAll() {
 		{
 			name:         "user registration",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/register",
+			url:          "/api/v1/auth/register/",
 			data:         RegisterForm{Username: "vahid", Password: "123456"},
 			expectedCode: http.StatusOK,
 		},
 		{
 			name:         "auth login",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/login",
+			url:          "/api/v1/auth/login/",
 			data:         RegisterForm{Username: "vahid", Password: "123456"},
 			expectedCode: http.StatusOK,
 		},
 		{
 			name:         "auth login wrong password",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/login",
+			url:          "/api/v1/auth/login/",
 			data:         RegisterForm{Username: "vahid", Password: "12345"},
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "auth login form validation error",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/login",
+			url:          "/api/v1/auth/login/",
 			data:         RegisterForm{Username: "vahid"},
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "user registration username duplicate",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/register",
+			url:          "/api/v1/auth/register/",
 			data:         RegisterForm{Username: "vahid", Password: "123456"},
 			expectedCode: http.StatusBadRequest,
 		},
 		{
 			name:         "user registration validation error ",
 			method:       http.MethodPost,
-			url:          "/api/v1/auth/register",
+			url:          "/api/v1/auth/register/",
 			data:         RegisterForm{Username: "vahid", Password: ""},
 			expectedCode: http.StatusBadRequest,
 		},

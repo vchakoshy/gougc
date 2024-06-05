@@ -32,7 +32,8 @@ func (s *ModuleTestSuite) SetupSuite() {
 
 	s.usecase = NewUsecase(s.db)
 	s.router = gin.New()
-	NewModule(s.db, s.router.Group("/api/v1"))
+	m := NewModule(s.db)
+	m.SetupRoutes(s.router.Group("/api/v1"))
 }
 
 func (s *ModuleTestSuite) TearDownSuite() {

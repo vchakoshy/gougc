@@ -2,6 +2,7 @@ package auth
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -65,6 +66,11 @@ func (s *UsecaseTestSuite) TestRegister() {
 
 	// register user with duplicate username
 	o, err = s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
+	s.NotNil(err)
+	s.Zero(o.ID)
+
+	// register user with bad password
+	o, err = s.usecase.Register(RegisterForm{Username: "vahid", Password: strings.Repeat("1", 100)})
 	s.NotNil(err)
 	s.Zero(o.ID)
 

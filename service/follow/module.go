@@ -10,18 +10,19 @@ type Module struct {
 	db *gorm.DB
 }
 
-func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
+func NewModule(db *gorm.DB) *Module {
 	db.AutoMigrate(&models.Follow{})
 
-	m := NewDelivery(db)
-
-	r := router.Group("/follow")
-	{
-		r.POST("/", m.Follow)
-		r.DELETE("/", m.UnFollow)
-
-	}
 	return &Module{
 		db: db,
+	}
+}
+
+func (m *Module) SetupRoutes(router *gin.RouterGroup) {
+	d := NewDelivery(m.db)
+	r := router.Group("/follow")
+	{
+		r.POST("/", d.Follow)
+		r.DELETE("/", d.UnFollow)
 	}
 }
