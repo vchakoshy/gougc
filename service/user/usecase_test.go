@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/vchakoshy/gougc/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -23,6 +24,7 @@ func (s *UsecaseTestSuite) SetupSuite() {
 	if err != nil {
 		panic(err)
 	}
+	s.db.AutoMigrate(&models.User{})
 
 	s.usecase = NewUsecase(s.db)
 }
@@ -36,6 +38,19 @@ func TestNoteTestSuite(t *testing.T) {
 	suite.Run(t, &UsecaseTestSuite{})
 }
 
-func (s *UsecaseTestSuite) TestAll() {
+func (s *UsecaseTestSuite) TestRegister() {
+	// register user
+	o, err := s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
+	s.Nil(err)
+	s.Greater(o.ID, uint(0))
+	s.NotEqual("123456", o.Password)
+
+	pok := s.usecase.CheckPasswordHash(o.Password, "123456")
+	s.True(pok)
+
+	// register user with duplicate username
+	o, err = s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
+	s.NotNil(err)
+	s.Zero(o.ID)
 
 }
