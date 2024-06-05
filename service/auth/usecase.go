@@ -21,9 +21,15 @@ func NewUsecase(db *gorm.DB) *Usecase {
 
 var ErrUserNotFound = errors.New("user not found")
 
-func (u Usecase) Login(r LoginForm) (models.User, error) {
+func (u Usecase) FindByUsername(username string) (models.User, error) {
 	var o models.User
-	err := u.db.Model(&models.User{}).Where("username=?", r.Username).First(&o).Error
+	err := u.db.Model(&models.User{}).Where(models.User{Username: username}).First(&o).Error
+
+	return o, err
+}
+
+func (u Usecase) Login(r LoginForm) (models.User, error) {
+	o, err := u.FindByUsername(r.Username)
 	if err != nil {
 		return o, err
 	}
