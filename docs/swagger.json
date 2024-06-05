@@ -9,7 +9,7 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
-        "/auth/login": {
+        "/auth/login/": {
             "post": {
                 "description": "Login User",
                 "consumes": [
@@ -43,7 +43,7 @@
                 }
             }
         },
-        "/auth/register": {
+        "/auth/register/": {
             "post": {
                 "description": "Register User",
                 "consumes": [
