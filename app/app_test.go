@@ -17,6 +17,7 @@ import (
 
 type ModuleTestSuite struct {
 	suite.Suite
+	app    *App
 	db     *gorm.DB
 	router *gin.Engine
 }
@@ -29,12 +30,13 @@ func (s *ModuleTestSuite) SetupSuite() {
 		panic(err)
 	}
 
-	a := App{
+	a := &App{
 		db:     s.db,
 		router: gin.Default(),
 	}
 	a.Setup()
 
+	s.app = a
 }
 
 func (s *ModuleTestSuite) TearDownSuite() {
@@ -44,6 +46,11 @@ func (s *ModuleTestSuite) TearDownSuite() {
 
 func TestModuleTestSuite(t *testing.T) {
 	suite.Run(t, &ModuleTestSuite{})
+}
+
+func (s *ModuleTestSuite) TestUcs() {
+	err := s.app.FollowModule.Usecase.Follow(1, 2)
+	s.Nil(err)
 }
 
 func (s *ModuleTestSuite) TestAll() {

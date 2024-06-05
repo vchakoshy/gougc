@@ -7,7 +7,8 @@ import (
 )
 
 type Module struct {
-	db *gorm.DB
+	db      *gorm.DB
+	Usecase Usecase
 }
 
 func NewModule(db *gorm.DB) *Module {

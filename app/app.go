@@ -43,10 +43,9 @@ func (a *App) Setup() {
 	a.FollowModule = follow.NewModule(a.db)
 
 	v1 := a.router.Group("/api/v1")
-	{
-		a.AuthModule.SetupRoutes(v1)
-		a.FollowModule.SetupRoutes(v1)
-	}
+
+	a.AuthModule.SetupRoutes(v1)
+	a.FollowModule.SetupRoutes(v1)
 
 	a.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

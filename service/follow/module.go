@@ -7,19 +7,21 @@ import (
 )
 
 type Module struct {
-	db *gorm.DB
+	db      *gorm.DB
+	Usecase *Usecase
 }
 
 func NewModule(db *gorm.DB) *Module {
 	db.AutoMigrate(&models.Follow{})
 
 	return &Module{
-		db: db,
+		db:      db,
+		Usecase: NewUsecase(db),
 	}
 }
 
 func (m *Module) SetupRoutes(router *gin.RouterGroup) {
-	d := NewDelivery(m.db)
+	d := NewDelivery(m.db, m.Usecase)
 	r := router.Group("/follow")
 	{
 		r.POST("/", d.Follow)

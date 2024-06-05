@@ -11,9 +11,9 @@ type Delivery struct {
 	usecase *Usecase
 }
 
-func NewDelivery(db *gorm.DB) *Delivery {
+func NewDelivery(db *gorm.DB, uc *Usecase) *Delivery {
 	ctrl := &Delivery{
-		usecase: NewUsecase(db),
+		usecase: uc,
 	}
 
 	return ctrl
