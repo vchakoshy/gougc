@@ -2,6 +2,7 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/vchakoshy/gougc/models"
 	"gorm.io/gorm"
 )
 
@@ -10,14 +11,13 @@ type Module struct {
 }
 
 func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
-	// db.AutoMigrate(&models.Tag{})
+	db.AutoMigrate(&models.User{})
 
 	m := NewDelivery(db)
 
 	r := router.Group("/auth")
 	{
-		r.GET("/", m.Index)
-
+		r.POST("/register", m.Register)
 	}
 	return &Module{
 		db: db,

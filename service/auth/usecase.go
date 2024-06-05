@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"errors"
+
 	"github.com/vchakoshy/gougc/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -14,6 +16,22 @@ func NewUsecase(db *gorm.DB) *Usecase {
 	return &Usecase{
 		db: db,
 	}
+}
+
+var ErrUserNotFound = errors.New("user not found")
+
+func (u Usecase) Login(r LoginForm) (models.User, error) {
+	var o models.User
+	err := u.db.Model(&models.User{}).Where("username=?", r.Username).First(&o).Error
+	if err != nil {
+		return o, err
+	}
+
+	if u.CheckPasswordHash(o.Password, r.Password) {
+		return o, nil
+	}
+
+	return models.User{}, ErrUserNotFound
 }
 
 func (u Usecase) Register(r RegisterForm) (models.User, error) {

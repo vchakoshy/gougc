@@ -19,6 +19,18 @@ func NewDelivery(db *gorm.DB) *Delivery {
 	return ctrl
 }
 
-func (Delivery) Index(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, "ok")
+func (d Delivery) Register(ctx *gin.Context) {
+	var r RegisterForm
+	if err := ctx.ShouldBindJSON(&r); err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	o, err := d.usecase.Register(r)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, o)
 }

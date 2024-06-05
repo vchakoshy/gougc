@@ -53,7 +53,29 @@ func (s *ModuleTestSuite) TestAll() {
 		data         any
 		expectedCode int
 		authHeader   string
-	}{}
+	}{
+		{
+			name:         "user registration",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/register",
+			data:         RegisterForm{Username: "vahid", Password: "123456"},
+			expectedCode: http.StatusOK,
+		},
+		{
+			name:         "user registration username duplicate",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/register",
+			data:         RegisterForm{Username: "vahid", Password: "123456"},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "user registration validation error ",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/register",
+			data:         RegisterForm{Username: "vahid", Password: ""},
+			expectedCode: http.StatusBadRequest,
+		},
+	}
 
 	for _, tt := range tests {
 		w := httptest.NewRecorder()

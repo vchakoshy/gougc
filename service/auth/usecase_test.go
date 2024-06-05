@@ -48,6 +48,21 @@ func (s *UsecaseTestSuite) TestRegister() {
 	pok := s.usecase.CheckPasswordHash(o.Password, "123456")
 	s.True(pok)
 
+	// log in by registered user
+	o, err = s.usecase.Login(LoginForm{Username: "vahid", Password: "123456"})
+	s.Nil(err)
+	s.NotZero(o.ID)
+
+	// log in by wrong password
+	o, err = s.usecase.Login(LoginForm{Username: "vahid", Password: "12345"})
+	s.Equal(ErrUserNotFound, err)
+	s.Zero(o)
+
+	// log in by wrong username
+	o, err = s.usecase.Login(LoginForm{Username: "vahid_does_not_exists", Password: "12345"})
+	s.Equal(gorm.ErrRecordNotFound, err)
+	s.Zero(o)
+
 	// register user with duplicate username
 	o, err = s.usecase.Register(RegisterForm{Username: "vahid", Password: "123456"})
 	s.NotNil(err)
