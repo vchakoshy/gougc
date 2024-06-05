@@ -53,7 +53,50 @@ func (s *ModuleTestSuite) TestAll() {
 		data         any
 		expectedCode int
 		authHeader   string
-	}{}
+	}{
+		{
+			name:         "follow",
+			method:       http.MethodPost,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1, FollowerID: 2},
+			expectedCode: http.StatusOK,
+		},
+		{
+			name:         "follow exists",
+			method:       http.MethodPost,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1, FollowerID: 2},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "follow with validation error",
+			method:       http.MethodPost,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "UnFollow with validation error",
+			method:       http.MethodDelete,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "UnFollow with not exists",
+			method:       http.MethodDelete,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1, FollowerID: 50},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "UnFollow ",
+			method:       http.MethodDelete,
+			url:          "/api/v1/follow/",
+			data:         FollowRequest{LeaderID: 1, FollowerID: 2},
+			expectedCode: http.StatusOK,
+		},
+	}
 
 	for _, tt := range tests {
 		w := httptest.NewRecorder()

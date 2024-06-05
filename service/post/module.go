@@ -14,7 +14,7 @@ func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
 
 	m := NewDelivery(db)
 
-	r := router.Group("/user")
+	r := router.Group("/post")
 	{
 		r.GET("/", m.Index)
 

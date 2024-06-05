@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/vchakoshy/gougc/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -23,6 +24,7 @@ func (s *UsecaseTestSuite) SetupSuite() {
 	if err != nil {
 		panic(err)
 	}
+	s.db.AutoMigrate(&models.Follow{})
 
 	s.usecase = NewUsecase(s.db)
 }
@@ -37,5 +39,15 @@ func TestNoteTestSuite(t *testing.T) {
 }
 
 func (s *UsecaseTestSuite) TestAll() {
+	err := s.usecase.Follow(1, 2)
+	s.Nil(err)
 
+	err = s.usecase.Follow(1, 2)
+	s.NotNil(err)
+
+	err = s.usecase.UnFollow(1, 2)
+	s.Nil(err)
+
+	err = s.usecase.UnFollow(1, 2)
+	s.NotNil(err)
 }

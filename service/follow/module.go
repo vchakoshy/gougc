@@ -2,6 +2,7 @@ package follow
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/vchakoshy/gougc/models"
 	"gorm.io/gorm"
 )
 
@@ -10,13 +11,14 @@ type Module struct {
 }
 
 func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
-	// db.AutoMigrate(&models.Tag{})
+	db.AutoMigrate(&models.Follow{})
 
 	m := NewDelivery(db)
 
-	r := router.Group("/user")
+	r := router.Group("/follow")
 	{
-		r.GET("/", m.Index)
+		r.POST("/", m.Follow)
+		r.DELETE("/", m.UnFollow)
 
 	}
 	return &Module{
