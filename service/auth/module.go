@@ -18,6 +18,7 @@ func NewModule(db *gorm.DB, router *gin.RouterGroup) *Module {
 	r := router.Group("/auth")
 	{
 		r.POST("/register", m.Register)
+		r.POST("/login", m.Login)
 	}
 	return &Module{
 		db: db,

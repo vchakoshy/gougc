@@ -62,6 +62,27 @@ func (s *ModuleTestSuite) TestAll() {
 			expectedCode: http.StatusOK,
 		},
 		{
+			name:         "auth login",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/login",
+			data:         RegisterForm{Username: "vahid", Password: "123456"},
+			expectedCode: http.StatusOK,
+		},
+		{
+			name:         "auth login wrong password",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/login",
+			data:         RegisterForm{Username: "vahid", Password: "12345"},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
+			name:         "auth login form validation error",
+			method:       http.MethodPost,
+			url:          "/api/v1/auth/login",
+			data:         RegisterForm{Username: "vahid"},
+			expectedCode: http.StatusBadRequest,
+		},
+		{
 			name:         "user registration username duplicate",
 			method:       http.MethodPost,
 			url:          "/api/v1/auth/register",
