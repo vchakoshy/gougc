@@ -1,4 +1,4 @@
-package user
+package post
 
 import (
 	"net/http"
