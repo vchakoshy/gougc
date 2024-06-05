@@ -6,3 +6,7 @@ swagger:        ## Generate swaggger api docs
 
 api:            ## Run api
 	go run main.go api
+
+test:           ## Run tests
+	go test -timeout 30s -coverprofile=go-code-cover github.com/vchakoshy/gougc/...
+	rm go-code-cover
