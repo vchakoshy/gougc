@@ -9,6 +9,7 @@ import (
 	_ "github.com/vchakoshy/gougc/docs"
 	"github.com/vchakoshy/gougc/pkg"
 
+	"github.com/vchakoshy/gougc/service/attachment"
 	"github.com/vchakoshy/gougc/service/auth"
 	"github.com/vchakoshy/gougc/service/follow"
 	"gorm.io/driver/postgres"
@@ -21,8 +22,9 @@ type App struct {
 	db     *gorm.DB
 	router *gin.Engine
 
-	AuthModule   *auth.Module
-	FollowModule *follow.Module
+	AuthModule       *auth.Module
+	FollowModule     *follow.Module
+	AttachmentModule *attachment.Module
 }
 
 const defaultDbDSN = "user=postgres password=123456 host=localhost dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tehran"
@@ -48,11 +50,13 @@ func NewApp() App {
 func (a *App) Setup() {
 	a.AuthModule = auth.NewModule(a.db)
 	a.FollowModule = follow.NewModule(a.db)
+	a.AttachmentModule = attachment.NewModule(a.db, "../media/partial")
 
 	v1 := a.router.Group("/api/v1")
 
 	a.AuthModule.SetupRoutes(v1)
 	a.FollowModule.SetupRoutes(v1)
+	a.AttachmentModule.SetupRoutes(v1)
 
 	a.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

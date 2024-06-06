@@ -16,11 +16,11 @@ type Module struct {
 	tusStore   filestore.FileStore
 }
 
-func NewModule(db *gorm.DB) *Module {
+func NewModule(db *gorm.DB, mediaPath string) *Module {
 	db.AutoMigrate(&models.Attachment{})
 
 	tusStore := filestore.FileStore{
-		Path: "./media/partial/",
+		Path: mediaPath,
 	}
 
 	composer := tusd.NewStoreComposer()
@@ -51,7 +51,13 @@ func (m *Module) SetupRoutes(router *gin.RouterGroup) {
 		}
 
 		r.POST("/save/", func(ctx *gin.Context) {
+			// f, err := m.tusStore.GetUpload(ctx, ctx.PostForm("file_id"))
 
+			// info, err := f.GetInfo(ctx)
+
+			// src, err := f.GetReader(ctx)
+
+			// srcByte, err := io.ReadAll(src)
 		})
 	}
 }

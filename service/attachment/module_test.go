@@ -2,6 +2,7 @@ package attachment
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,13 @@ func (s *ModuleTestSuite) SetupSuite() {
 
 	s.usecase = NewUsecase(s.db)
 	s.router = gin.New()
-	m := NewModule(s.db)
+
+	fp, err := filepath.Abs("../../media/partial/")
+	if err != nil {
+		panic(err)
+	}
+
+	m := NewModule(s.db, fp)
 	m.SetupRoutes(s.router.Group("/api/v1"))
 }
 
