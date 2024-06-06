@@ -20,6 +20,16 @@ definitions:
     - password
     - username
     type: object
+  follow.FollowRequest:
+    properties:
+      follower_id:
+        type: integer
+      leader_id:
+        type: integer
+    required:
+    - follower_id
+    - leader_id
+    type: object
   models.User:
     properties:
       created_at:
@@ -84,6 +94,49 @@ paths:
       summary: Register User
       tags:
       - Auth
+  /follow/:
+    delete:
+      consumes:
+      - application/json
+      description: UnFollow User
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/follow.FollowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: UnFollow User
+      tags:
+      - Follow
+    post:
+      consumes:
+      - application/json
+      description: Follow User
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/follow.FollowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Follow User
+      tags:
+      - Follow
 securityDefinitions:
   ApiKeyAuth:
     in: header

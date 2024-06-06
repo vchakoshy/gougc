@@ -19,6 +19,14 @@ func NewDelivery(db *gorm.DB, uc *Usecase) *Delivery {
 	return ctrl
 }
 
+// @Summary Follow User
+// @Description Follow User
+// @Accept  json
+// @Produce  json
+// @Tags Follow
+// @Param data body FollowRequest true "data"
+// @Success 200 {object} string
+// @Router /follow/ [post]
 func (d Delivery) Follow(ctx *gin.Context) {
 	var r FollowRequest
 	if err := ctx.ShouldBindJSON(&r); err != nil {
@@ -34,6 +42,14 @@ func (d Delivery) Follow(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, "ok")
 }
 
+// @Summary UnFollow User
+// @Description UnFollow User
+// @Accept  json
+// @Produce  json
+// @Tags Follow
+// @Param data body FollowRequest true "data"
+// @Success 200 {object} string
+// @Router /follow/ [delete]
 func (d Delivery) UnFollow(ctx *gin.Context) {
 	var r FollowRequest
 	if err := ctx.ShouldBindJSON(&r); err != nil {
