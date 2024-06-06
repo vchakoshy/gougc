@@ -7,6 +7,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "github.com/vchakoshy/gougc/docs"
+	"github.com/vchakoshy/gougc/pkg"
 
 	"github.com/vchakoshy/gougc/service/auth"
 	"github.com/vchakoshy/gougc/service/follow"
@@ -24,8 +25,10 @@ type App struct {
 	FollowModule *follow.Module
 }
 
+const defaultDbDSN = "user=postgres password=123456 host=localhost dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tehran"
+
 func NewApp() App {
-	dsn := "user=postgres password=123456 host=localhost dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tehran"
+	dsn := pkg.GetEnv("DB_DSN", defaultDbDSN)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 		NamingStrategy: schema.NamingStrategy{
@@ -34,6 +37,7 @@ func NewApp() App {
 	if err != nil {
 		log.Fatal("gorm.Open error ", err)
 	}
+
 	return App{
 		db:     db,
 		router: gin.Default(),
