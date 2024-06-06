@@ -26,5 +26,8 @@ func (m *Module) SetupRoutes(router *gin.RouterGroup) {
 	{
 		r.POST("/", d.Follow)
 		r.DELETE("/", d.UnFollow)
+
+		r.GET("/followers/:user_id", d.Followers)
+		r.GET("/leaders/:user_id", d.Leaders)
 	}
 }

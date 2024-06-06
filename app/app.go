@@ -12,6 +12,7 @@ import (
 	"github.com/vchakoshy/gougc/service/follow"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -26,9 +27,11 @@ type App struct {
 func NewApp() App {
 	// docker run --name go-postgres --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 -d postgres
 	dsn := "user=postgres password=123456 host=localhost dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tehran"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{NamingStrategy: schema.NamingStrategy{
-		SingularTable: false,
-	}})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: false,
+		}})
 	if err != nil {
 		log.Fatal("gorm.Open error ", err)
 	}

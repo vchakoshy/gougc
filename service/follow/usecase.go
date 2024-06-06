@@ -44,3 +44,25 @@ func (u Usecase) IsFollow(followerID, leaderID uint) bool {
 
 	return count > 0
 }
+
+func (u Usecase) Followers(leaderID uint, offset, limit int) []models.Follow {
+	var fl []models.Follow
+	u.db.Model(&models.Follow{}).
+		Where(models.Follow{LeaderID: leaderID}).
+		Offset(offset).
+		Limit(limit).
+		Find(&fl)
+
+	return fl
+}
+
+func (u Usecase) Leaders(followerID uint, offset, limit int) []models.Follow {
+	var fl []models.Follow
+	u.db.Model(&models.Follow{}).
+		Where(models.Follow{FollowerID: followerID}).
+		Offset(offset).
+		Limit(limit).
+		Find(&fl)
+
+	return fl
+}

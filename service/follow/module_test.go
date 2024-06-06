@@ -63,6 +63,18 @@ func (s *ModuleTestSuite) TestAll() {
 			expectedCode: http.StatusOK,
 		},
 		{
+			name:         "followers list",
+			method:       http.MethodGet,
+			url:          "/api/v1/follow/followers/1",
+			expectedCode: http.StatusOK,
+		},
+		{
+			name:         "leaders list",
+			method:       http.MethodGet,
+			url:          "/api/v1/follow/leaders/1",
+			expectedCode: http.StatusOK,
+		},
+		{
 			name:         "follow exists",
 			method:       http.MethodPost,
 			url:          "/api/v1/follow/",

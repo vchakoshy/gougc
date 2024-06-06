@@ -42,6 +42,12 @@ func (s *UsecaseTestSuite) TestAll() {
 	err := s.usecase.Follow(1, 2)
 	s.Nil(err)
 
+	fl := s.usecase.Leaders(2, 0, 10)
+	s.Equal(1, len(fl))
+
+	fl = s.usecase.Followers(1, 0, 10)
+	s.Equal(1, len(fl))
+
 	isFollow := s.usecase.IsFollow(2, 1)
 	s.True(isFollow)
 

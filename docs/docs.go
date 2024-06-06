@@ -149,6 +149,76 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/follow/followers/{user_id}": {
+            "get": {
+                "description": "Followers list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Follow"
+                ],
+                "summary": "Followers list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Follow"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/follow/leaders/{user_id}": {
+            "get": {
+                "description": "Leaders list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Follow"
+                ],
+                "summary": "Leaders list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "user_id",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Follow"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -190,6 +260,23 @@ const docTemplate = `{
             ],
             "properties": {
                 "follower_id": {
+                    "type": "integer"
+                },
+                "leader_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Follow": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "follower_id": {
+                    "type": "integer"
+                },
+                "id": {
                     "type": "integer"
                 },
                 "leader_id": {
