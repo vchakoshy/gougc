@@ -33,7 +33,8 @@ func NewApp() App {
 		Logger: logger.Default.LogMode(logger.Silent),
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: false,
-		}})
+		},
+	})
 	if err != nil {
 		log.Fatal("gorm.Open error ", err)
 	}
