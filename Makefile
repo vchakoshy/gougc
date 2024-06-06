@@ -7,6 +7,9 @@ swagger:        ## Generate swaggger api docs
 api:            ## Run api
 	go run main.go api
 
+db:             ## Run Database
+	docker run --name go-postgres --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 -d postgres
+
 test:           ## Run tests
 	go test -timeout 30s -coverprofile=go-code-cover github.com/vchakoshy/gougc/...
 	rm go-code-cover

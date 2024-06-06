@@ -5,10 +5,10 @@
 ## Run database
 
 ```bash
-docker run --name go-postgres --rm -p 5432:5432 -e POSTGRES_PASSWORD=123456 -d postgres
+make db
 ```
 
-## run app
+## Run Application api
 
 ```bash
 make api
