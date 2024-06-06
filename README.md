@@ -1,6 +1,6 @@
 # Gougc - Golang user generated content platform
 
-![Coverage](https://img.shields.io/badge/Coverage-91.0%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-89.4%25-brightgreen)
 
 ## Run database
 
