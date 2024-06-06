@@ -35,3 +35,12 @@ func (u Usecase) UnFollow(leaderID, followerID uint) error {
 
 	return u.db.Delete(&o).Error
 }
+
+func (u Usecase) IsFollow(followerID, leaderID uint) bool {
+	var count int64
+	u.db.Model(&models.Follow{}).Where(models.Follow{
+		LeaderID: leaderID, FollowerID: followerID,
+	}).Count(&count)
+
+	return count > 0
+}
