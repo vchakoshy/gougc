@@ -1,5 +1,5 @@
 # Gougc - Golang user generated content platform
-![Coverage](https://img.shields.io/badge/Coverage-89.2%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-89.5%25-brightgreen)
 
 ## run app
 
